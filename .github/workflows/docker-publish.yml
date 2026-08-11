@@ -55,6 +55,7 @@ jobs:
   update_manifest:
      name: Update Kubernetes Image Tag
      runs-on: ubuntu-latest
+     needs: build_push
 
      steps:
        - name: Checkout repository
