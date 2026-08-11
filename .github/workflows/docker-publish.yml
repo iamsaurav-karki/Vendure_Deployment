@@ -51,3 +51,26 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  update_manifest:
+     name: Update Kubernetes Image Tag
+     runs-on: ubuntu-latest
+
+     steps:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+
+       - name: Update image tag in values.yaml
+         run: |
+           echo "Updating image to:"
+           echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}"
+
+           yq -i '
+             .image.repository = "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" |
+             .image.tag = "'"${IMAGE_TAG}"'"
+           ' saurav-shop/values.yaml
+
+       - name: Verify updated values.yaml
+         run: |
+           echo "Updated values.yaml:"
+           cat saurav-shop/values.yaml
