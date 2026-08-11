@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-worker
+  namespace: saurav-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-worker
+  template:
+    metadata:
+      labels:
+        app: app-worker
+    spec:
+      containers:
+        - name: app-worker
+          image: saurav-shop:prod
+          imagePullPolicy: IfNotPresent
+          command: ["node", "dist/index-worker.js"]
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: db-secret
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
