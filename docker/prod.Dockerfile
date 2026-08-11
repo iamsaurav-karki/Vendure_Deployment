@@ -19,7 +19,9 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/static ./static
 
-RUN addgroup -S vendure && adduser -S vendure -G vendure
+RUN addgroup -S vendure && adduser -S vendure -G vendure \
+  && chown -R vendure:vendure /app
+
 USER vendure
 
 EXPOSE 3000
