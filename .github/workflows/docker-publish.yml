@@ -58,7 +58,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: docker/Prod.Dockerfile
+          file: docker/prod.Dockerfile
           push: true
           tags: |
             ${{ needs.prepare.outputs.image }}:${{ needs.prepare.outputs.tag }}
