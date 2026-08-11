@@ -1,0 +1,6 @@
+apiVersion: v2
+name: saurav-shop
+description: Helm chart for the Saurav Shop Vendure e-commerce deployment
+type: application
+version: 0.1.0
+appVersion: "3.7.2"

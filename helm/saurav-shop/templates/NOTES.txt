@@ -1,0 +1,8 @@
+Saurav Shop deployed.
+
+Check status:
+  kubectl get pods -n {{ .Values.namespace }}
+
+Access the app locally:
+  kubectl port-forward -n {{ .Values.namespace }} svc/app-server {{ .Values.server.port }}:{{ .Values.server.port }}
+  open http://localhost:{{ .Values.server.port }}/admin
