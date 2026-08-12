@@ -2,7 +2,7 @@
 namespace: saurav-shop
 image:
   repository: ghcr.io/iamsaurav-karki/vendure-deployment-assignment-devops
-  tag: 1e95440
+  tag: ea0772a
   pullPolicy: IfNotPresent
 server:
   replicas: 1
