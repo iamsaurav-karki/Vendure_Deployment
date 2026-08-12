@@ -4,7 +4,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/pipeline]
 
 permissions:
   contents: read
@@ -56,6 +56,44 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  image_scan:
+    name: Trivy Image Scan
+    runs-on: ubuntu-latest
+    needs: build_push
+    env:
+      IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build_push.outputs.image_tag }}
+    steps:
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download Trivy HTML report template
+        run: |
+          mkdir -p contrib
+          curl -sSL -o contrib/html.tpl \
+            https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
+
+      - name: Trivy scan -> HTML report
+        uses: aquasecurity/trivy-action@0.28.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          image-ref: ${{ env.IMAGE }}
+          format: template
+          template: '@contrib/html.tpl'
+          output: trivy-report.html
+          severity: CRITICAL,HIGH,MEDIUM,LOW
+
+      - name: Upload HTML report as build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-html-report
+          path: trivy-report.html
+          retention-days: 30
 
   update_manifest:
       name: Update Kubernetes Image Tag
