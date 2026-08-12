@@ -4,8 +4,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [main, feat/pipeline]   # feat/pipeline still temporary for testing
-  workflow_dispatch:
+    branches: [main]
 
 permissions:
   contents: read
@@ -81,3 +80,11 @@ jobs:
           run: |
             echo "Updated values.yaml:"
             cat helm/saurav-shop/values.yaml
+
+        - name: Commit and push updated values.yaml
+          run: |
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git add helm/saurav-shop/values.yaml
+              git diff --staged --quiet || git commit -m "chore: bump image tag to ${IMAGE_TAG} [skip ci]"
+              git push
