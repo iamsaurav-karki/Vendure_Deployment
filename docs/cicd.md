@@ -1,7 +1,7 @@
 # CI/CD
 
-GitHub Actions workflow at `.github/workflows/docker-publish.yml`. Two jobs:
-`build_push` and `update_manifest`, the second depending on the first via `needs`.
+GitHub Actions workflow at `.github/workflows/docker-publish.yml`. Three jobs:
+`build_push` , `Trivy Image Scan` and `update_manifest`, the second and third depending on the first via `needs`.
 
 ## Trigger
 
@@ -41,7 +41,25 @@ explicitly removes the ambiguity.
 back to the repo, only to the registry. Least-privilege per job, not a single
 blanket permission block for the whole workflow.
 
-## Job 2: update_manifest
+
+## Job 2. scan — Trivy image scan (DevSecOps)
+
+Runs after the image is pushed, scans that exact image (not the local build cache), and produces a human-readable HTML vulnerability report.
+
+Steps:
+
+Set image reference — writes IMAGE=ghcr.io/<repo>:<tag> to $GITHUB_ENV so later steps can use ${{ env.IMAGE }}. (See note on env context below.)
+Log in to GHCR — needed because the image is pulled from the registry for scanning.
+Download Trivy HTML report template — pulls html.tpl from the Trivy repo at runtime, since the action doesn't bundle it.
+Trivy scan → HTML report — via aquasecurity/trivy-action, scans severities CRITICAL,HIGH,MEDIUM,LOW, outputs trivy-report.html.
+Upload HTML report as build artifact — via actions/upload-artifact@v4, name trivy-html-report, retained 30 days.
+
+
+Where to find the report
+
+`GitHub repo → Actions tab → the relevant workflow run → scroll to Artifacts at the bottom of the run summary → download trivy-html-report` (zip containing trivy-report.html). Artifacts are per-run, not published anywhere public, and expire after the configured retention window (currently 30 days, GitHub's own max is typically 90).
+
+## Job 3: update_manifest
 
 After `build_push` succeeds, this job:
 1. Writes the new `image.repository` and `image.tag` into `helm/saurav-shop/values.yaml`
