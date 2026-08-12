@@ -72,7 +72,7 @@ the commands:
   are separate Deployments, config vs. secrets, health checks, migrations
 - [`docs/helm.md`](docs/helm.md) — install/upgrade/uninstall, secret handling,
   first-deploy migration step
-- [`docs/ci-cd.md`](docs/ci-cd.md) — pipeline design, tagging strategy, the
+- [`docs/cicd.md`](docs/ci-cd.md) — pipeline design, tagging strategy, the
   values.yaml audit-trail pattern, what's deliberately out of scope and why
 
 ## Deploying
