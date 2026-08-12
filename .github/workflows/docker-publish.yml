@@ -64,9 +64,10 @@ jobs:
     permissions:
       contents: read
       packages: read
-    env:
-      IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build_push.outputs.image_tag }}
     steps:
+      - name: Set image reference
+        run: echo "IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.build_push.outputs.image_tag }}" >> "$GITHUB_ENV"
+
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
