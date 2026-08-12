@@ -90,3 +90,8 @@ jobs:
               git add helm/saurav-shop/values.yaml
               git diff --staged --quiet || git commit -m "chore: bump image tag to ${IMAGE_TAG} [skip ci]"
               git push
+
+  # CD:
+
+  #   ( For Continuous Deployment, can setup helm upgrade script to reconcile the k8s cluster with the latest image tag or can use other CD tools
+  #   like FluxCD and ArgoCD to delect the changes in tag and they will automatically reconcile those tags to connected kuberneres cluster )
