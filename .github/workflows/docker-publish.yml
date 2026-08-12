@@ -82,7 +82,7 @@ jobs:
             https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
 
       - name: Trivy scan -> HTML report
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
