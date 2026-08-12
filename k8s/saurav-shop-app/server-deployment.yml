@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: app-server
-          image: saurav-shop:prod
+          image: ghcr.io/iamsaurav-karki/vendure-deployment-assignment-devops:5cdc093
           imagePullPolicy: IfNotPresent
           command: ["node", "dist/index.js"]
           ports:

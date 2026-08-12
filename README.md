@@ -109,3 +109,45 @@ the commands:
 **Deployed and running on Kubernetes:**
 
 ![Vendure running on Kubernetes](docs/images/vendure-k8s.jpeg)
+
+
+## Tested with the latest updated tag by CI pipeline. 
+
+```
+  kubectl get pods -n saurav-shop
+NAME                          READY   STATUS    RESTARTS      AGE
+app-server-77fcf54989-644bs   1/1     Running   0             6m43s
+app-worker-6845955b74-2s6m7   1/1     Running   0             6m35s
+postgres-89bcb5fc4-tmkwt      1/1     Running   2 (30m ago)   24h
+
+  kubectl get pods -n saurav-shop -o custom-columns='POD:.metadata.name,CONTAINER:.spec.containers[*].name,IMAGE:.spec.containers[*].image'
+POD                           CONTAINER    IMAGE
+app-server-77fcf54989-644bs   app-server   ghcr.io/iamsaurav-karki/vendure-deployment-assignment-devops:5cdc093
+app-worker-6845955b74-2s6m7   app-worker   ghcr.io/iamsaurav-karki/vendure-deployment-assignment-devops:5cdc093
+postgres-89bcb5fc4-tmkwt      postgres     postgres:17-alpine
+
+  kubectl logs app-server-77fcf54989-644bs -n saurav-shop -f
+info 8/12/26, 11:23 AM - [Vendure Server] Bootstrapping Vendure Server (pid: 1)...
+info 8/12/26, 11:23 AM - [AssetServerPlugin] Creating asset server middleware
+info 8/12/26, 11:23 AM - [EmailPlugin] Creating dev mailbox middleware
+info 8/12/26, 11:23 AM - [RoutesResolver] HealthController {/health}:
+info 8/12/26, 11:23 AM - [RouterExplorer] Mapped {/health, GET} route
+info 8/12/26, 11:23 AM - [GraphQLModule] Mapped {/shop-api, POST} route
+info 8/12/26, 11:23 AM - [GraphQLModule] Mapped {/admin-api, POST} route
+info 8/12/26, 11:23 AM - [NestApplication] Nest application successfully started
+info 8/12/26, 11:23 AM - [Vendure Server] ====================================================
+info 8/12/26, 11:23 AM - [Vendure Server]   Vendure server (v3.7.2) now running on port 3000
+info 8/12/26, 11:23 AM - [Vendure Server] ----------------------------------------------------
+info 8/12/26, 11:23 AM - [Vendure Server] Shop API:       http://localhost:3000/shop-api
+info 8/12/26, 11:23 AM - [Vendure Server] Admin API:      http://localhost:3000/admin-api
+info 8/12/26, 11:23 AM - [Vendure Server] Dashboard UI:   http://localhost:3000/dashboard
+info 8/12/26, 11:23 AM - [Vendure Server] GraphiQL Admin: http://localhost:3000/graphiql/admin
+info 8/12/26, 11:23 AM - [Vendure Server] GraphiQL Shop:  http://localhost:3000/graphiql/shop
+info 8/12/26, 11:23 AM - [Vendure Server] Asset server:   http://localhost:3000/assets
+info 8/12/26, 11:23 AM - [Vendure Server] Dev mailbox:    http://localhost:3000/mailbox
+info 8/12/26, 11:23 AM - [Vendure Server] ====================================================
+info 8/12/26, 11:23 AM - [Vendure Server] Anonymous telemetry is enabled to help us improve Vendure.
+info 8/12/26, 11:23 AM - [Vendure Server] To disable, set VENDURE_DISABLE_TELEMETRY=true.
+
+```
+
