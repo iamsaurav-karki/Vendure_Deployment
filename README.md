@@ -95,3 +95,17 @@ the commands:
 - **No automated cluster deploy from CI** — the assignment's `kind` cluster
   isn't reachable from GitHub's hosted runners. CI stops at updating
   `values.yaml`; the actual `helm upgrade` is a manual step. See `docs/ci-cd.md`.
+
+## Verified working
+
+**Production Docker image, built and run:**
+
+![Production Dockerfile build and run](docs/images/deploy-with-prod-dockerfile.jpeg)
+
+**Full stack running via docker-compose (app + Postgres):**
+
+![docker-compose production deployment](docs/images/prod-docker-compose-dep.jpeg)
+
+**Deployed and running on Kubernetes:**
+
+![Vendure running on Kubernetes](docs/images/vendure-k8s.jpeg)
